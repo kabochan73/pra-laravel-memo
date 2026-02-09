@@ -5,24 +5,17 @@
         <div class="col-span-3">
             {{-- メモ一覧表示機能 --}}
             @forelse ($memos as $memo)
-                <div class="bg-white rounded-lg shadow mb-4 p-5">
+                <div class="bg-white rounded-lg shadow mb-4 p-5 relative hover:bg-gray-50">
+                    <a href="{{ route('memos.edit', $memo) }}" class="absolute inset-0 z-0"></a>
                     <div class="flex justify-between items-start">
                         <div class="flex-1">
                             <h2 class="text-lg font-semibold text-gray-800">{{ $memo->title }}</h2>
                             @if ($memo->body)
                                 <p class="text-gray-600 mt-2 whitespace-pre-line">{{ Str::limit($memo->body, 200) }}</p>
                             @endif
-                            <p class="text-gray-400 text-sm mt-2">{{ $memo->updated_at->format('Y/m/d H:i') }}</p>
                         </div>
-                        <div class="flex gap-2 ml-4">
-                            <a href="{{ route('memos.edit', $memo) }}"
-                                class="text-blue-500 hover:text-blue-700 text-sm">詳細</a>
-                            <form action="{{ route('memos.destroy', $memo) }}" method="POST"
-                                onsubmit="return confirm('削除しますか？')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500 hover:text-red-700 text-sm">削除</button>
-                            </form>
+                        <div>
+                            <p class="text-gray-400 text-sm mt-2">{{ $memo->updated_at->format('Y/m/d H:i') }}</p>
                         </div>
                     </div>
                 </div>

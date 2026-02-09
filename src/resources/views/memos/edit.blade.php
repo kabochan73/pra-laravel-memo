@@ -22,10 +22,30 @@
                 class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">{{ old('body', $memo->body) }}</textarea>
         </div>
 
-        <div class="flex justify-end gap-3">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">更新</button>
-            <a href="{{ route('memos.index') }}"
-                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded">キャンセル</a>
+        <div class="flex items-center">
+            {{-- 削除ボタン（左寄せ） --}}
+            <div>
+                <button type="button" onclick="if(confirm('本当に削除しますか？')) document.getElementById('delete-form').submit()"
+                    class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded">
+                    削除
+                </button>
+            </div>
+            {{-- 更新・キャンセル（右寄せ） --}}
+            <div class="flex gap-3 ml-auto">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded">
+                    更新
+                </button>
+                <a href="{{ route('memos.index') }}"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-2 rounded">
+                    キャンセル
+                </a>
+            </div>
         </div>
+    </form>
+
+    {{-- 削除用の隠しフォーム --}}
+    <form id="delete-form" action="{{ route('memos.destroy', $memo) }}" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
     </form>
 @endsection
