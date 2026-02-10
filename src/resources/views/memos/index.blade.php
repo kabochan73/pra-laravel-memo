@@ -3,6 +3,18 @@
 @section('content')
     <div class="grid grid-cols-10 gap-6">
         <div class="col-span-3">
+            {{-- 検索機能 --}}
+            <form action="{{ route('memos.index') }}" method="GET" class="mb-4">
+                <div class="flex gap-2">
+                    <input type="text" name="search" value="{{ request('search') }}" placeholder="メモを検索..."
+                        class="flex-1 border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-sm">検索</button>
+                    @if (request('search'))
+                        <a href="{{ route('memos.index') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded text-sm">クリア</a>
+                    @endif
+                </div>
+            </form>
+
             {{-- メモ一覧表示機能 --}}
             @forelse ($memos as $memo)
                 <div class="bg-white rounded-lg shadow mb-4 p-5 relative hover:bg-gray-50">
@@ -22,6 +34,9 @@
             @empty
                 <p class="text-gray-500 text-center py-8">メモがありません。</p>
             @endforelse
+            <div class="mt-4">
+                {{ $memos->links() }}
+            </div>
         </div>
         {{-- メモ作成機能 --}}
         <div class="col-span-7">

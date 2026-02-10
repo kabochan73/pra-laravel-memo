@@ -7,9 +7,19 @@ use Illuminate\Http\Request;
 
 class MemoController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $memos = Memo::latest()->get();
+        $query = Memo::latest();
+
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('body', 'like', "%{$search}%");
+            });
+        }
+
+        $memos = $query->paginate(7)->withQueryString();
         return view('memos.index', compact('memos'));
     }
 
